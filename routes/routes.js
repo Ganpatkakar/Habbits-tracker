@@ -22,7 +22,7 @@ export default function MyTabs() {
           component={Home}
           options={{
             tabBarLabel: 'Habbits',
-            tabBarIcon: ({ color, size = 24 }) => (
+            tabBarIcon: ({ color = '#000', size = 24 }) => (
               <Ionicons name="md-infinite" size={size} color={color} />
             ),
           }}
@@ -32,7 +32,7 @@ export default function MyTabs() {
           component={Settings}
           options={{
             tabBarLabel: 'More',
-            tabBarIcon: ({ color, size = 24 }) => (
+            tabBarIcon: ({ color = '#000', size = 24 }) => (
               <Feather name="more-horizontal" size={size} color={color} />
             ),
           }}

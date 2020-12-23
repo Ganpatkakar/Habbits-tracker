@@ -27,7 +27,7 @@ export default function Home() {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <HomeHeader />
+      <HomeHeader editList={editList} addList={addList} />
       <ShowHabbits lists={lists} updateList={updateList} />
     </SafeAreaView>
   );
