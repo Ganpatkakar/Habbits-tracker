@@ -1,24 +1,37 @@
+/* eslint-disable react-native/no-color-literals */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import ShowWeekDays from './showWeekDays';
 
-export default function ShowHabbits({ lists, updateList }) {
+export default function ShowHabbits(props) {
+  const { lists, updateList } = props;
   if (lists.length) {
-    const currentHabbitsChain = lists.map((element) => {
+    // const currentHabbitsChain = lists.map((element) => {
+    //   return (
+    //     <View key={element.title}>
+    //       <Text styles={styles.habbitTitle}>{element.title}</Text>
+    //       {element.habbitsChain.map((chain, index) => {
+    //         return (
+    //           <Text key={chain} onPress={() => updateList(index)}>
+    //             {chain}
+    //           </Text>
+    //         );
+    //       })}
+    //     </View>
+    //   );
+    // });
+    const currentHabbitsChain = lists.map((list) => {
       return (
-        <View key={element.title}>
-          <Text styles={styles.habbitTitle}>{element.title}</Text>
-          {element.habbitsChain.map((chain, index) => {
-            return (
-              <Text key={chain} onPress={() => updateList(index)}>
-                {chain}
-              </Text>
-            );
-          })}
+        <View>
+          <Text onPress={updateList} style={styles.habbitTitle}>
+            {list}
+          </Text>
         </View>
       );
     });
     return (
       <View style={styles.habbitsContainer}>
+        <ShowWeekDays />
         {currentHabbitsChain || <Text>Add Habbits</Text>}
       </View>
     );
@@ -30,17 +43,12 @@ export default function ShowHabbits({ lists, updateList }) {
   );
 }
 
-ShowHabbits.defaultProps = {
-  lists: [{ title: '', habbitsChain: [] }],
-  updateList: () => {},
-};
-
 const styles = StyleSheet.create({
   habbitsContainer: {
-    flex: 1,
+    padding: 10,
   },
   habbitTitle: {
     paddingBottom: 5,
     paddingTop: 15,
-  },
+  }
 });
