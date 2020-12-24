@@ -2,16 +2,22 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-export default function HomeHeader() {
+export default function HomeHeader(props) {
+  const {
+    listsLength = true,
+    enableEdit = () => {},
+    addList = () => {},
+    isActiveEdit = false,
+  } = props;
   return (
     <View style={styles.homeHeaderContainer}>
       <View style={styles.editHabbits}>
-        <Text>Edit</Text>
+        {listsLength ? <Text onPress={enableEdit}>{isActiveEdit ? 'Done' : 'Edit'}</Text> : null}
       </View>
       <View style={styles.title}>
         <Text>My Habbits</Text>
       </View>
-      <View style={styles.addHabbits}>
+      <View style={styles.addHabbits} onTouchEndCapture={() => addList()}>
         <AntDesign name="plus" size={24} color="black" />
       </View>
     </View>
