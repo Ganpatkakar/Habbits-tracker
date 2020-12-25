@@ -2,10 +2,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
 const passSevenDaysCalculator = () => {
   const returnDates = [];
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     returnDates.push(
@@ -16,32 +15,43 @@ const passSevenDaysCalculator = () => {
 };
 
 export default function CurrentHabbitsChain(props) {
-  const { dates } = props;
-  const renderWeek = passSevenDaysCalculator().map((day) => {
+  const { dates, updateHabbit, index } = props;
+  const renderWeeksHabbits = passSevenDaysCalculator().map((day) => {
     return (
-      <View style={dates[day] ? styles.activeDayContainer : styles.dayContainer}>
+      <View
+        onTouchEndCapture={() => updateHabbit(day, index)}
+        style={dates[day] ? styles.activeDayContainer : styles.dayContainer}
+      >
         <Text />
       </View>
     );
   });
-  return <View style={styles.weekDays}>{renderWeek}</View>;
+  return <View style={styles.weekDays}>{renderWeeksHabbits}</View>;
 }
 
 const styles = StyleSheet.create({
   weekDays: {
-    height: 55,
+    height: 40,
     flexDirection: 'row',
   },
   dayContainer: {
     flex: 1,
+    marginLeft: 2,
+    marginRight: 2,
+    borderRadius: 4,
     justifyContent: 'space-around',
     backgroundColor: '#ddd',
-    borderColor: '#aaa'
+    borderWidth: 0.25,
+    borderColor: '#aaa',
   },
   activeDayContainer: {
     flex: 1,
+    marginLeft: 2,
+    marginRight: 2,
+    borderRadius: 4,
     justifyContent: 'space-around',
     backgroundColor: 'green',
-    borderColor: '#000'
+    borderWidth: 0.25,
+    borderColor: '#aaa',
   },
 });
