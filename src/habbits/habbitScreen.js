@@ -7,7 +7,7 @@ import ShowDeletableLists from './habbitsComponents/showDeletableLists';
 export default function HabbitsScreen(props) {
   const { navigation } = props;
   const [lists, setList] = useState([{
-    title: 'm1',
+    title: 'Meditation',
     dates: { '2020-12-25': true, '2020-12-24': true, '2020-12-20': true },
   },
   {
@@ -21,6 +21,12 @@ export default function HabbitsScreen(props) {
       setActiveEdit(false);
     }
   }, [lists]);
+
+  const updateHabbit = (day, index) => {
+    lists[index].dates[day] = lists[index].dates[day] ? !lists[index].dates[day] : true;
+    setList([...lists]);
+  };
+
   const enableEdit = () => {
     setActiveEdit(!isActiveEdit);
   };
@@ -31,11 +37,10 @@ export default function HabbitsScreen(props) {
     const newList = lists.filter((l, i) => i !== index);
     setList(newList);
   };
-  const updateList = () => {};
   const showLists = isActiveEdit ? (
     <ShowDeletableLists lists={lists} deleteLists={deleteLists} />
   ) : (
-    <ShowHabbits navigation={navigation} lists={lists} updateList={updateList} />
+    <ShowHabbits navigation={navigation} lists={lists} updateHabbit={updateHabbit} />
   );
   return (
     <SafeAreaView style={styles.container}>
