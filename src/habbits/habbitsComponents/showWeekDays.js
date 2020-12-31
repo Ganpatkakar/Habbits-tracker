@@ -21,8 +21,8 @@ const ShowWeekDays = () => {
   const renderWeek = weekOrder().map((day, index) => {
     const activeStyle = index === 6 ? styles.activeWeekDay : null;
     return (
-      <View style={styles.dayContainer}>
-        <Text style={{ ...styles.day, ...activeStyle }}>{day}</Text>
+      <View key={day} style={{ ...styles.dayContainer, ...activeStyle }}>
+        <Text style={{ ...styles.day }}>{day}</Text>
       </View>
     );
   });
@@ -33,24 +33,32 @@ const styles = StyleSheet.create({
   weekDays: {
     marginTop: 5,
     flexDirection: 'row',
+    height: 40,
   },
   dayContainer: {
     flex: 1,
+    marginLeft: 2,
+    marginRight: 2,
+    borderRadius: 4,
     justifyContent: 'space-around',
     alignItems: 'center',
     alignContent: 'center'
   },
   activeWeekDay: {
-    width: 30,
-    height: 30,
+    flex: 1,
+    marginLeft: 2,
+    marginRight: 2,
     borderRadius: 4,
+    borderColor: 'green',
     borderWidth: 1,
-    borderColor: 'green'
+    justifyContent: 'space-around',
   },
   day: {
-    padding: 5,
     textAlign: 'center',
-    color: '#aaa'
+    color: '#aaa',
+    marginLeft: 2,
+    marginRight: 2,
+    borderRadius: 4,
   },
 });
 
