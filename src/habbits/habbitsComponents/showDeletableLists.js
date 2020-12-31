@@ -1,26 +1,34 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity
+} from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 
 export default function ShowHabbits(props) {
   const { lists, deleteLists } = props;
   if (lists.length) {
-    const currentHabbitsChain = lists.map((list, index) => {
+    const renderItem = ({ item: list }) => {
       return (
         <View style={styles.habbitsContainer}>
-          <View
-            style={styles.deleteIcon}
-            onTouchEndCapture={() => deleteLists(index)}
-          >
-            <FontAwesome5 name="minus-circle" size={24} color="#e91e63" />
-            <View style={styles.habbitTitle}>
+          <TouchableOpacity>
+            <View style={styles.tipsSectionHorizontal}>
+              <FontAwesome5 onTouchEndCapture={() => deleteLists(list.id)} style={styles.minusIcon} name="minus-circle" size={24} color="#e91e63" />
               <Text>{list.title}</Text>
             </View>
-          </View>
+
+          </TouchableOpacity>
         </View>
       );
-    });
-    return <View style={styles.habbitsContainer}>{currentHabbitsChain}</View>;
+    };
+    return (
+      <SafeAreaView style={styles.habbitsContainer}>
+        <FlatList
+          data={lists}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </SafeAreaView>
+    );
   }
   return (
     <View style={styles.habbitsContainer}>
@@ -33,13 +41,11 @@ const styles = StyleSheet.create({
   habbitsContainer: {
     padding: 5,
   },
-  deleteIcon: {
-    width: 60,
+  tipsSectionHorizontal: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    alignItems: 'center'
   },
-  habbitTitle: {
-    paddingBottom: 5,
-    flexDirection: 'row',
-  },
+  minusIcon: {
+    marginRight: 10
+  }
 });
