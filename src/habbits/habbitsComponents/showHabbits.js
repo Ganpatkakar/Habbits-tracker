@@ -1,35 +1,48 @@
 /* eslint-disable react-native/no-color-literals */
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {
+  View, Text, StyleSheet, FlatList
+} from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import ShowWeekDays from './showWeekDays';
 import CurrentHabbitsChain from './currentHabbitsChain';
 
 export default function ShowHabbits(props) {
   const { navigation, lists, updateHabbit } = props;
-  const navigateToDetails = (dates, index) => {
-    navigation.navigate('HabbitDetails', { dates, updateHabbit, index });
+  // const [selectedId, setSelectedId] = useState(null);
+  const navigateToDetails = (dates) => {
+    navigation.navigate('HabbitDetails', { dates });
   };
   if (lists.length) {
-    const currentHabbits = lists.map((list, index) => {
+    const renderItem = ({ item: list }) => {
       return (
-        <View style={styles.habitList}>
+        <View key={list.id} style={styles.habbitList}>
           <View style={styles.habbitTitleContianer}>
             <View style={styles.titleContianer}>
               <Text style={styles.title}>{list.title}</Text>
             </View>
             <View style={styles.detailsArrow}>
-              <Entypo onPress={() => navigateToDetails(list.dates, index)} name="chevron-right" size={24} color="black" />
+              <Entypo
+                onPress={() => navigateToDetails(list.dates)}
+                name="chevron-right"
+                size={24}
+                color="black"
+              />
             </View>
           </View>
-          <CurrentHabbitsChain dates={list.dates} index={index} updateHabbit={updateHabbit} />
+          <CurrentHabbitsChain dates={list.dates} id={list.id} updateHabbit={updateHabbit} />
         </View>
       );
-    });
+    };
     return (
       <View style={styles.habbitsContainer}>
         <ShowWeekDays />
-        {currentHabbits || <Text>Add Habbits</Text>}
+        <FlatList
+          data={lists}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+        {/* {currentHabbits || <Text>Add Habbits</Text>} */}
       </View>
     );
   }
@@ -42,15 +55,14 @@ export default function ShowHabbits(props) {
 
 const styles = StyleSheet.create({
   habbitsContainer: {
-    padding: 10,
+    padding: 5
   },
-  habitList: {
+  habbitList: {
     marginTop: 15,
   },
   habbitTitleContianer: {
     flexDirection: 'row',
     padding: 5,
-    height: 40,
   },
   titleContianer: {
     flex: 1,
@@ -65,3 +77,24 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   }
 });
+
+// const currentHabbits = lists.map((list, index) => {
+//   return (
+//     <View style={styles.habbitList}>
+//       <View style={styles.habbitTitleContianer}>
+//         <View style={styles.titleContianer}>
+//           <Text style={styles.title}>{list.title}</Text>
+//         </View>
+//         <View style={styles.detailsArrow}>
+//           <Entypo
+//             onPress={() => navigateToDetails(list.dates, index)}
+//             name="chevron-right"
+//             size={24}
+//             color="black"
+//           />
+//         </View>
+//       </View>
+//       <CurrentHabbitsChain dates={list.dates} id={list.id} updateHabbit={updateHabbit} />
+//     </View>
+//   );
+// });
