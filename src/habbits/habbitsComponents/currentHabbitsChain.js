@@ -15,11 +15,12 @@ const passSevenDaysCalculator = () => {
 };
 
 export default function CurrentHabbitsChain(props) {
-  const { dates, updateHabbit, index } = props;
+  const { dates, updateHabbit, id } = props;
   const renderWeeksHabbits = passSevenDaysCalculator().map((day) => {
     return (
       <View
-        onTouchEndCapture={() => updateHabbit(day, index)}
+        key={day}
+        onTouchEndCapture={() => updateHabbit(day, id)}
         style={dates[day] ? styles.activeDayContainer : styles.dayContainer}
       >
         <Text />
