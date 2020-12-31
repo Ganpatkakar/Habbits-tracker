@@ -1,13 +1,18 @@
 /* eslint-disable react-native/no-color-literals */
 import React, { useState } from 'react';
 import {
-  View, Text, StyleSheet, Switch, Button
+  View, Text, StyleSheet, Switch, Button, Platform
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function ReminderScreen({ navigation, route }) {
-  const { addReminder, reminder = { hours: '', minutes: '' }, isReminderEnable = false } = route.params;
+  const {
+    addReminder,
+    reminder = { hours: '', minutes: '' },
+    isReminderEnable = false,
+  } = route.params;
   const [isEnabled, setIsEnabled] = useState(isReminderEnable);
+  const [showDatePickerAndriod, setShowDatePickerAndriod] = useState(false);
   const reminderDate = new Date();
   if (reminder.hours >= 0) {
     reminderDate.setHours(reminder.hours);
@@ -16,6 +21,9 @@ export default function ReminderScreen({ navigation, route }) {
   const [date, setDate] = useState(reminderDate);
 
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+  const toggleSetShowDatePickerAndriod = () => setShowDatePickerAndriod(
+    (previousState) => !previousState
+  );
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
@@ -25,6 +33,39 @@ export default function ReminderScreen({ navigation, route }) {
     // console.log(date.getHours(), date.getMinutes());
     addReminder(date.getHours(), date.getMinutes());
     navigation.goBack();
+  };
+
+  const datePickerAndriod = () => {
+    return (
+      <View>
+        {(isEnabled || showDatePickerAndriod) && (
+          <View style={styles.timePickerContainer}>
+            <View>
+              <DateTimePicker
+                testID="dateTimePicker"
+                value={date}
+                mode="time"
+                is24Hour
+                display="default"
+                onChange={onChange}
+              />
+            </View>
+          </View>
+        )}
+        <View>
+          <Text style={styles.andriodShowTime}>
+            Reminder Time
+            {date.getHours()}
+            {':'}
+            {date.getMinutes()}
+          </Text>
+        </View>
+        <View style={styles.toggleDatePicker}>
+          <Button title="Change Reminder Time" onPress={toggleSetShowDatePickerAndriod} />
+        </View>
+        <Button title="Add Reminder" onPress={addAndNavigateBack} />
+      </View>
+    );
   };
 
   return (
@@ -43,8 +84,7 @@ export default function ReminderScreen({ navigation, route }) {
           />
         </View>
       </View>
-      {
-        isEnabled && (
+      {isEnabled && Platform.OS === 'ios' && (
         <View style={styles.timePickerContainer}>
           <View>
             <DateTimePicker
@@ -56,13 +96,10 @@ export default function ReminderScreen({ navigation, route }) {
               onChange={onChange}
             />
           </View>
-          <Button
-            title="Add Reminder"
-            onPress={addAndNavigateBack}
-          />
+          <Button title="Add Reminder" onPress={addAndNavigateBack} />
         </View>
-        )
-      }
+      )}
+      {isEnabled && Platform.OS === 'android' && datePickerAndriod()}
     </View>
   );
 }
@@ -79,7 +116,7 @@ const styles = StyleSheet.create({
   },
   reminderTitle: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   title: {
     fontSize: 14,
@@ -87,7 +124,16 @@ const styles = StyleSheet.create({
   reminderButton: {
     flex: 1,
     textAlign: 'right',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
-  timePickerContainer: {}
+  timePickerContainer: {},
+  toggleDatePicker: {
+    marginBottom: 10
+  },
+  andriodShowTime: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginTop: 20,
+    marginBottom: 20
+  }
 });
