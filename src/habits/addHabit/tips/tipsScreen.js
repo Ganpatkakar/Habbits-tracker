@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity, FlatList
 } from 'react-native';
 import Separator from '../../../utils/seperator';
+import stylesCommon from '../../../utils/custom-text-style';
 
 const tipsList = [
   'Exercise', 'Eat More Vegetable', 'Limit Caffeine', 'Practice Yoga', 'Wake up early',
@@ -19,7 +20,7 @@ export default function TipsScreen({ navigation, route }) {
     return (
       <View key={item}>
         <TouchableOpacity onPress={() => navigateBack(item)}>
-          <Text>{item}</Text>
+          <Text style={stylesCommon.normalText}>{item}</Text>
         </TouchableOpacity>
         <Separator />
       </View>

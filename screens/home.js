@@ -1,12 +1,13 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import HabbitsScreen from '../src/habbits/habbitScreen';
-import AddHabbitScreen from '../src/habbits/addHabbit/addHabbitScreen';
-import TipsScreen from '../src/habbits/addHabbit/tips/tipsScreen';
-import RepeatScreen from '../src/habbits/addHabbit/repeat/repeatScreen';
-import ReminderScreen from '../src/habbits/addHabbit/reminder/reminderScreen';
-import HabbitDetailsScreen from '../src/habbits/details/habbitDetailsScreen';
+import HabitsScreen from '../src/habits/habitScreen';
+import AddHabitScreen from '../src/habits/addHabit/addHabitScreen';
+import TipsScreen from '../src/habits/addHabit/tips/tipsScreen';
+import RepeatScreen from '../src/habits/addHabit/repeat/repeatScreen';
+import ReminderScreen from '../src/habits/addHabit/reminder/reminderScreen';
+import HabitDetailsScreen from '../src/habits/details/habitDetailsScreen';
+import EditHabit from '../src/habits/details/edit/editHabit';
 
 const Stack = createStackNavigator();
 
@@ -16,24 +17,24 @@ export default function Home() {
       <Stack.Navigator>
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Habbits"
-          component={HabbitsScreen}
+          name="Habits"
+          component={HabitsScreen}
         />
         <Stack.Screen
           options={{
             headerBackTitle: 'Cancel',
-            headerTitle: 'New Habbit',
+            headerTitle: 'New Habit',
           }}
-          name="AddHabbits"
-          component={AddHabbitScreen}
+          name="AddHabits"
+          component={AddHabitScreen}
         />
         <Stack.Screen
           options={{
             headerBackTitle: 'Back',
             headerTitle: 'Details',
           }}
-          name="HabbitDetails"
-          component={HabbitDetailsScreen}
+          name="HabitDetails"
+          component={HabitDetailsScreen}
         />
         <Stack.Screen
           options={{ headerBackTitle: 'Back', headerTitle: 'Tips' }}
@@ -49,6 +50,11 @@ export default function Home() {
           options={{ headerBackTitle: 'Back', headerTitle: 'Reminder' }}
           name="Reminder"
           component={ReminderScreen}
+        />
+        <Stack.Screen
+          options={{ headerBackTitle: 'Back', headerTitle: 'Edit Habit' }}
+          name="EditHabit"
+          component={EditHabit}
         />
       </Stack.Navigator>
     </NavigationContainer>

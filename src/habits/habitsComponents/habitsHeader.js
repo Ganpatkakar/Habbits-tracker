@@ -1,10 +1,12 @@
 import React from 'react';
 import {
-  View, Text, StyleSheet, TouchableHighlight
+  View, Text, StyleSheet
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import stylesCommon from '../../utils/custom-text-style';
 
-export default function HabbitsHeader(props) {
+export default function HabitsHeader(props) {
   const {
     listsLength = true,
     enableEdit = () => {},
@@ -13,16 +15,16 @@ export default function HabbitsHeader(props) {
   } = props;
   return (
     <View style={styles.homeHeaderContainer}>
-      <View style={styles.editHabbits}>
-        {listsLength ? <Text onPress={enableEdit}>{isActiveEdit ? 'Done' : 'Edit'}</Text> : null}
+      <View style={styles.editHabits}>
+        {listsLength ? <Text style={stylesCommon.normalText} onPress={enableEdit}>{isActiveEdit ? 'Done' : 'Edit'}</Text> : null}
       </View>
       <View style={styles.title}>
-        <Text>My Habbits</Text>
+        <Text style={stylesCommon.textTitle}>My Habits</Text>
       </View>
-      <View style={styles.addHabbits}>
-        <TouchableHighlight onPress={() => addList()}>
+      <View style={styles.addHabits}>
+        <TouchableOpacity onPress={() => addList()}>
           <AntDesign name="plus" size={24} color="black" />
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent: 'center',
   },
-  editHabbits: {
+  editHabits: {
     flex: 1,
     textAlign: 'center',
     alignItems: 'center',
@@ -48,8 +50,8 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: 'center',
   },
-  addHabbits: {
+  addHabits: {
     flex: 1,
     alignItems: 'center',
-  },
+  }
 });

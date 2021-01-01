@@ -3,17 +3,18 @@ import {
   View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import stylesCommon from '../../utils/custom-text-style';
 
-export default function ShowHabbits(props) {
+export default function ShowHabits(props) {
   const { lists, deleteLists } = props;
   if (lists.length) {
     const renderItem = ({ item: list }) => {
       return (
-        <View style={styles.habbitsContainer}>
+        <View style={styles.habitsContainer}>
           <TouchableOpacity>
             <View style={styles.tipsSectionHorizontal}>
               <FontAwesome5 onTouchEndCapture={() => deleteLists(list.id)} style={styles.minusIcon} name="minus-circle" size={24} color="#e91e63" />
-              <Text>{list.title}</Text>
+              <Text style={stylesCommon.normalText}>{list.title}</Text>
             </View>
 
           </TouchableOpacity>
@@ -21,7 +22,7 @@ export default function ShowHabbits(props) {
       );
     };
     return (
-      <SafeAreaView style={styles.habbitsContainer}>
+      <SafeAreaView style={styles.habitsContainer}>
         <FlatList
           data={lists}
           renderItem={renderItem}
@@ -31,14 +32,14 @@ export default function ShowHabbits(props) {
     );
   }
   return (
-    <View style={styles.habbitsContainer}>
-      <Text>Add Habbits</Text>
+    <View style={styles.habitsContainer}>
+      <Text style={stylesCommon.normalText}>Add Habits</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  habbitsContainer: {
+  habitsContainer: {
     padding: 5,
   },
   tipsSectionHorizontal: {

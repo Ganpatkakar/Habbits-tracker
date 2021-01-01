@@ -14,20 +14,20 @@ const passSevenDaysCalculator = () => {
   return returnDates.reverse();
 };
 
-export default function CurrentHabbitsChain(props) {
-  const { dates, updateHabbit, id } = props;
-  const renderWeeksHabbits = passSevenDaysCalculator().map((day) => {
+export default function CurrentHabitsChain(props) {
+  const { dates, updateHabit, id } = props;
+  const renderWeeksHabits = passSevenDaysCalculator().map((day) => {
     return (
       <View
         key={day}
-        onTouchEndCapture={() => updateHabbit(day, id)}
+        onTouchEndCapture={() => updateHabit(day, id)}
         style={dates[day] ? styles.activeDayContainer : styles.dayContainer}
       >
         <Text />
       </View>
     );
   });
-  return <View style={styles.weekDays}>{renderWeeksHabbits}</View>;
+  return <View style={styles.weekDays}>{renderWeeksHabits}</View>;
 }
 
 const styles = StyleSheet.create({

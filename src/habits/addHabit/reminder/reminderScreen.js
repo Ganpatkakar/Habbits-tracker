@@ -4,19 +4,20 @@ import {
   View, Text, StyleSheet, Switch, Button, Platform
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import stylesCommon from '../../../utils/custom-text-style';
 
 export default function ReminderScreen({ navigation, route }) {
   const {
     addReminder,
-    reminder = { hours: '', minutes: '' },
+    reminder = { hour: '', minute: '' },
     isReminderEnable = false,
   } = route.params;
   const [isEnabled, setIsEnabled] = useState(isReminderEnable);
   const [showDatePickerAndriod, setShowDatePickerAndriod] = useState(false);
   const reminderDate = new Date();
-  if (reminder.hours >= 0) {
-    reminderDate.setHours(reminder.hours);
-    reminderDate.setMinutes(reminder.minutes);
+  if (reminder.hour !== '' && reminder.hour >= 0) {
+    reminderDate.setHours(reminder.hour);
+    reminderDate.setMinutes(reminder.minute);
   }
   const [date, setDate] = useState(reminderDate);
 
@@ -72,7 +73,7 @@ export default function ReminderScreen({ navigation, route }) {
     <View style={styles.reminbderContainer}>
       <View style={styles.toggleContainer}>
         <View style={styles.reminderTitle}>
-          <Text style={styles.title}>Reminder</Text>
+          <Text style={{ ...styles.title, ...stylesCommon.normalText }}>Reminder</Text>
         </View>
         <View style={styles.reminderButton}>
           <Switch

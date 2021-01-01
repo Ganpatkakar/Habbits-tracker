@@ -1,14 +1,35 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { CalendarList } from 'react-native-calendars';
 import { useState, useEffect } from 'react/cjs/react.development';
+import stylesCommon from '../../utils/custom-text-style';
 
-export default function HabbitDetailsScreen({ route }) {
-  const { dates } = route.params;
+export default function HabitDetailsScreen({ navigation, route }) {
+  const { list, updateHabit, editCompleteHabit } = route.params;
+  const { dates: markingDates, id } = list;
   const [markedDates, setMarkedDates] = useState({});
+  const [dates, setDates] = useState(markingDates);
+
   useEffect(() => {
     setMarkedDates(loadMarkedDates());
   }, [dates]);
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Text
+          style={{ ...styles.updateButton, ...stylesCommon.normalText }}
+          onPress={updateHabitNavigation}
+        >
+          Update Habit
+        </Text>
+      ),
+    });
+  }, [navigation]);
+
+  const updateHabitNavigation = () => {
+    navigation.navigate('EditHabit', { list, editCompleteHabit });
+  };
 
   const loadMarkedDates = () => {
     const newMarkedDates = {};
@@ -28,12 +49,21 @@ export default function HabbitDetailsScreen({ route }) {
         };
       }
     }
-    return { ...newMarkedDates };
+    return newMarkedDates;
   };
+
+  const updateMarkedDates = (day) => {
+    updateHabit(day.dateString, id);
+    dates[day.dateString] = !dates[day.dateString];
+    // console.log(dates);
+    setDates({ ...dates });
+  };
+
   return (
     <View style={styles.calendarContainer}>
       <CalendarList
         markedDates={markedDates}
+        onDayPress={(day) => updateMarkedDates(day)}
         markingType="custom"
         // Max amount of months allowed to scroll to the past. Default = 50
         pastScrollRange={24}
@@ -52,5 +82,8 @@ export default function HabbitDetailsScreen({ route }) {
 const styles = StyleSheet.create({
   calendarContainer: {
     flex: 1
+  },
+  updateButton: {
+    marginRight: 5
   }
 });

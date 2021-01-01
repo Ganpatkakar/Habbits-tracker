@@ -6,8 +6,8 @@ import {
 export default function Settings() {
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{ flex: 1 }}>
-        <Text>Settings screen</Text>
+      <View>
+        <Text>Comming Soon ...</Text>
       </View>
     </SafeAreaView>
   );

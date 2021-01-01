@@ -1,6 +1,7 @@
 /* eslint-disable react-native/no-color-literals */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import stylesCommon from '../../utils/custom-text-style';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -22,7 +23,7 @@ const ShowWeekDays = () => {
     const activeStyle = index === 6 ? styles.activeWeekDay : null;
     return (
       <View key={day} style={{ ...styles.dayContainer, ...activeStyle }}>
-        <Text style={{ ...styles.day }}>{day}</Text>
+        <Text style={{ ...styles.day, ...stylesCommon.normalText }}>{day}</Text>
       </View>
     );
   });

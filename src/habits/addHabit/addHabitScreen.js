@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable react-native/no-color-literals */
 import React, { useState, useEffect } from 'react';
 import {
@@ -7,6 +8,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { Entypo } from '@expo/vector-icons';
 import Separator from '../../utils/seperator';
+import stylesCommon from '../../utils/custom-text-style';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -16,7 +18,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const askPermissions = async () => {
+export const askPermissions = async () => {
   const { status: existingStatus } = await Permissions.getAsync(
     Permissions.NOTIFICATIONS
   );
@@ -31,26 +33,27 @@ const askPermissions = async () => {
   return true;
 };
 
-async function schedulePushNotification(body, time) {
-  await Notifications.scheduleNotificationAsync({
+export async function schedulePushNotification(body, time) {
+  const currentScheduleNotificationId = await Notifications.scheduleNotificationAsync({
     content: {
-      title: 'My Habbits',
-      body,
+      title: 'My Habit',
+      body: `Time for ${body}`,
       data: { data: 'goes here' },
     },
     trigger: {
-      hour: time.hrs,
-      minute: time.min,
+      hour: parseInt(time.hour),
+      minute: parseInt(time.minute),
       // seconds: 60,
       repeats: true,
     },
   });
+  return Promise.resolve(currentScheduleNotificationId);
 }
 
-export default function AddHabbitScreen({ navigation, route }) {
-  const { addNewHabbit } = route.params;
+export default function AddHabitScreen({ navigation, route }) {
+  const { addNewHabit } = route.params;
   const [value, onChangeText] = React.useState('');
-  const [reminder, setReminder] = React.useState({ hours: '', minutes: '' });
+  const [reminder, setReminder] = React.useState({ hour: '', minute: '' });
   const [isReminderEnable, setReminderEnable] = useState(false);
 
   useEffect(() => {
@@ -58,49 +61,60 @@ export default function AddHabbitScreen({ navigation, route }) {
   }, []);
 
   const addButtonClick = () => {
-    const newHabbit = {
+    // console.log(reminder);
+    const newHabit = {
       title: value,
       dates: {}
     };
-    if (reminder.hours >= 0) {
-      newHabbit.reminderTime = {
-        hours: reminder.hours,
-        minutes: reminder.minutes
+    if (reminder.hour !== '' && reminder.hour >= 0) {
+      newHabit.reminderTime = {
+        hour: reminder.hour,
+        minute: reminder.minute
       };
+      schedulePushNotification(newHabit.title, newHabit.reminderTime)
+        .then((scheduleNotificationId) => {
+          newHabit.scheduleNotificationId = scheduleNotificationId;
+          addNewHabit(newHabit);
+          navigation.goBack();
+        })
+        .catch((err) => {
+          console.log('Error while getting schedule notification id', err);
+        });
+    } else {
+      addNewHabit(newHabit);
+      navigation.goBack();
     }
-    addNewHabbit(newHabbit);
-    navigation.goBack();
   };
 
   const selectTips = (tipVal) => {
     onChangeText(tipVal);
   };
 
-  const addReminder = (hours, minutes) => {
-    setReminder({ hours, minutes });
+  const addReminder = (hour, minute) => {
+    setReminder({ hour, minute });
     setReminderEnable(true);
   };
 
   return (
     // eslint-disable-next-line react-native/no-inline-styles
     <View style={{ padding: 10, marginTop: 20 }}>
-      <View style={styles.newHabbitTitle}>
-        <View style={styles.habbitTitleContainer}>
+      <View style={styles.newHabitTitle}>
+        <View style={styles.habitTitleContainer}>
           <TextInput
-            style={styles.habbitTitle}
+            style={styles.habitTitle}
             onChangeText={(text) => onChangeText(text)}
             placeholder="Name"
             autoFocus
             value={value}
           />
         </View>
-        <View style={styles.habbitTippsContainer}>
+        <View style={styles.habitTippsContainer}>
           <TouchableOpacity onPress={() => {
             navigation.push('Tips', { selectTips });
           }}
           >
             <View style={styles.tipsSectionHorizontal}>
-              <Text style={styles.tipText}>Tips</Text>
+              <Text style={{ ...styles.tipText, ...stylesCommon.normalText }}>Tips</Text>
               <Entypo style={styles.arrowIcon} name="chevron-right" size={24} color="black" />
             </View>
 
@@ -118,7 +132,7 @@ export default function AddHabbitScreen({ navigation, route }) {
 
       <TouchableOpacity onPress={() => navigation.push('Reminder', { reminder, addReminder, isReminderEnable })}>
         <View style={styles.tipsSectionHorizontal}>
-          <Text style={styles.tipText}>Reminder</Text>
+          <Text style={{ ...styles.tipText, ...stylesCommon.normalText }}>Reminder</Text>
           <Entypo style={styles.arrowIcon} name="chevron-right" size={24} color="black" />
         </View>
       </TouchableOpacity>
@@ -126,7 +140,7 @@ export default function AddHabbitScreen({ navigation, route }) {
       <Separator />
 
       <Button
-        title="Add Habbit"
+        title="Add Habit"
         disabled={!value.length}
         onPress={addButtonClick}
       />
@@ -142,14 +156,14 @@ export default function AddHabbitScreen({ navigation, route }) {
 }
 
 const styles = StyleSheet.create({
-  newHabbitTitle: {
+  newHabitTitle: {
     flexDirection: 'row',
   },
-  habbitTitleContainer: {
+  habitTitleContainer: {
     flex: 4,
     justifyContent: 'center'
   },
-  habbitTitle: {
+  habitTitle: {
     height: 40,
     borderWidth: 0.5,
     borderLeftWidth: 0,
@@ -157,7 +171,7 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 16
   },
-  habbitTippsContainer: {
+  habitTippsContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
