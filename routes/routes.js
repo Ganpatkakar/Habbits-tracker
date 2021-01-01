@@ -1,9 +1,8 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons } from '@expo/vector-icons';
-import stylesCommon from '../src/utils/custom-text-style';
+import { FontAwesome } from '@expo/vector-icons';
 
 // import Settings from '../screens/settings';
 import Home from '../screens/home';
@@ -23,9 +22,15 @@ export default function MyTabs() {
           name="Home"
           component={Home}
           options={{
-            tabBarLabel: () => (<Text style={stylesCommon.normalText}>Habits</Text>),
-            tabBarIcon: ({ color = '#000', size = 24 }) => (
-              <Ionicons name="md-infinite" size={size} color={color} />
+            tabBarLabel: () => (
+              <Text
+                style={styles.bottomNavText}
+              >
+                Habit Tracker
+              </Text>
+            ),
+            tabBarIcon: ({ color = '#000', size = 36 }) => (
+              <FontAwesome style={styles.chainIcon} name="chain" size={size} color={color} />
             ),
           }}
         />
@@ -43,3 +48,15 @@ export default function MyTabs() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  bottomNavText: {
+    margin: 5,
+    fontSize: 18
+  },
+  chainIcon: {
+    transform: [{ rotate: '-45deg' }],
+    height: 30,
+    marginTop: 10
+  }
+});

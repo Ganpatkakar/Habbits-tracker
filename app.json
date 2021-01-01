@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Habit-builder",
-    "slug": "habit-builder",
+    "name": "Habit-Tracker",
+    "slug": "habit-tracker",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,6 +29,7 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "Habit builder app for IOS and Android",
+    "githubUrl": "https://github.com/Ganpatkakar/Habbits-tracker/tree/master"
   }
 }
