@@ -51,9 +51,10 @@ export default function ShowHabits(props) {
       </View>
     );
   }
+
   return (
     <View style={styles.habitsContainer}>
-      <Text style={stylesCommon.normalText}>Add Habits</Text>
+      <Text style={stylesCommon.normalText}>Add Habits using + sign</Text>
     </View>
   );
 }
